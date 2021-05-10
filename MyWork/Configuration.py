@@ -21,3 +21,12 @@ dns = {
     'NYA': ['10.200.128.10', '10.200.160.10'],
     'NYX': ['10.200.160.10', '10.200.128.10']
 }
+
+ATTR_ID = { 'fqdn': 598,        # Fully Qualified Domain Name
+            'os_disk': 1475,    # Size of Disks
+            'data_disk': 1477,
+            'ip': 227,          # Ip Address
+            'core': 1473,
+            'memory': 1474,
+            'os': 221
+    }
