@@ -16,47 +16,25 @@ def check_ip(ip):
         return True
 
 
-class Computer:
+class Computer(object):
     """
 
-    :param fqdn (str): Fully Qualified Domain Name
-    :param os (str): OS's name
-    :param ip (str): ip address. Must be like {1-255}.{0-255}.{0-255}.{0-255}
-    :param core (int): VM's number of core
-    :param memory (int): VM's RAM
-    :param os_disk (int): Value
-    :param data_disk (int):
-
     """
-    def __init__(self, fqdn, os, ip,
-                 core, memory,
-                 os_disk, data_disk):
-        self.fqdn = fqdn
-        self.name = fqdn.split('.')[0]
 
-        self.os = os
+    def __init__(self, name):
+        self.name = name
+        self.fqdn = self.name + "domain.ru"
 
-        if check_ip(ip):
-            self.ip = ip
-        else:
-            print('IP address не валидный. Будет заменен на 127.0.0.1')
-            input('Press Enter')
-            self.ip = '127.0.0.1'
+        self.ip = "127.0.0.1"
+        self.core = 1
+        self.memory = 1
 
-        self.core = core
-        self.memory = memory
+        self.os_disk = 10
+        self.data_disk = 10
 
-        self.os_disk = os_disk
-        self.data_disk = data_disk
-
-        self.pref = self.tenant()
-
-    def tenant(self):
-        pref = self.name[3]
-        return pref
+        self.os = "Os"
 
     def __str__(self):
-
         r = f'Name:    {self.name}\n'
         r += '#' * 50 + '\n'
         r += f'FQDN    {self.fqdn}\n'
@@ -66,9 +44,63 @@ class Computer:
         r += f'CPU Cores:       {self.core} Cores\n'
         r += f'Memory RAM:      {self.memory} Gb\n'
         r += f'OS Disk:         {self.os_disk} Gb\n'
-        r += f'Data Disk:       {self.data_disk} Gb'
+        r += f'Data Disk:       {self.data_disk} Gb\n'
 
         return r
+
+# class Computer:
+#     """
+#
+#     :param fqdn (str): Fully Qualified Domain Name
+#     :param os (str): OS's name
+#     :param ip (str): ip address. Must be like {1-255}.{0-255}.{0-255}.{0-255}
+#     :param core (int): VM's number of core
+#     :param memory (int): VM's RAM
+#     :param os_disk (int): Value
+#     :param data_disk (int):
+#
+#     """
+#     def __init__(self, fqdn, os, ip,
+#                  core, memory,
+#                  os_disk, data_disk):
+#         self.fqdn = fqdn
+#         self.name = fqdn.split('.')[0]
+#
+#         self.os = os
+#
+#         if check_ip(ip):
+#             self.ip = ip
+#         else:
+#             print('IP address не валидный. Будет заменен на 127.0.0.1')
+#             input('Press Enter')
+#             self.ip = '127.0.0.1'
+#
+#         self.core = core
+#         self.memory = memory
+#
+#         self.os_disk = os_disk
+#         self.data_disk = data_disk
+#
+#         self.pref = self.tenant()
+#
+#     def tenant(self):
+#         pref = self.name[3]
+#         return pref
+#
+#     def __str__(self):
+#
+#         r = f'Name:    {self.name}\n'
+#         r += '#' * 50 + '\n'
+#         r += f'FQDN    {self.fqdn}\n'
+#         r += f'OS:     {self.os}\n'
+#         r += f'IP:     {self.ip}\n\n'
+#         r += ' Configure '.center(50, '#') + '\n'
+#         r += f'CPU Cores:       {self.core} Cores\n'
+#         r += f'Memory RAM:      {self.memory} Gb\n'
+#         r += f'OS Disk:         {self.os_disk} Gb\n'
+#         r += f'Data Disk:       {self.data_disk} Gb'
+#
+#         return r
 
 
 #a = Computer('TT1-QUIKAS113.finamtrade.ru', 'Windows Server 2012 STD R2 (64-bit)', '10.0.6.26',
