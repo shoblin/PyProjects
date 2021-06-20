@@ -10,10 +10,8 @@
 # -------------------------------------------------------------------------------
 import requests
 import re
-import Configuration as cnf
 
 from datetime import datetime, timedelta
-
 from pyzabbix import ZabbixAPI
 
 
@@ -84,7 +82,6 @@ def find_next_weekday(ndays, weekd):
     """
     Find next date
     """
-
     curr_day = datetime.now()
     curr_weekday = curr_day.isoweekday()
     weekday = WEEK_DAY_NUMERIC[weekd]
@@ -134,8 +131,6 @@ def get_date(interval):
     Take from interval numer of weekday, name of weekday, time
     """
 
-    hours = ''
-
     if interval == 'MSK Manual':
         return interval
 
@@ -148,8 +143,7 @@ def get_date(interval):
         weekday, tz, intr_srt, intr_end = groups.groups()
         intr_srt, intr_end = conv_time(tz, intr_srt), conv_time(tz, intr_end)
 
-        if intr_srt and intr_end:
-            hours = intr_srt + '-' + intr_end
+        hours = intr_srt + '-' + intr_end
 
         # Find a next date
         # We can reboot server Everyday take date of next day
@@ -161,6 +155,7 @@ def get_date(interval):
 
         result = date.date().strftime('%d.%m.%Y') + ' ' + hours
         return result
+
     elif groups2 := re.search(pattern2, interval):
         weekday, tz, intr_srt, weekday2,  intr_end = groups2.groups()
         intr_srt, intr_end = conv_time(tz, intr_srt), conv_time(tz, intr_end)
@@ -171,6 +166,7 @@ def get_date(interval):
         result = date.date().strftime('%d.%m.%Y') + ' ' + intr_srt
         result += '-' + date2.date().strftime('%d.%m.%Y') + ' ' + intr_end
         return result
+
     else:
         return interval
 
@@ -196,9 +192,6 @@ def print_result(results):
 
 
 def main():
-    # By default, the client will connect to a Jira instance started from the Atlassian Plugin SDK
-    # (see https://developer.atlassian.com/display/DOCS/Installing+the+Atlassian+Plugin+SDK for details).
-    # Override this with the options parameter.
 
     session = connect_jira()
 
