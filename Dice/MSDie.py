@@ -4,12 +4,12 @@ import random
 class Dice:
     """
     Multi-sided dices
-
-    num_sides: number of sides on Dice
-
     """
 
-    def __init__(self, num_sides):
+    def __init__(self, num_sides=6):
+        """
+        :param
+        """
         self.num_sides = num_sides
         self.curr_value = self.roll()
 
@@ -24,9 +24,28 @@ class Dice:
         return f"dx{self.num_sides}: {self.curr_value}"
 
 
-class Roll:
-    """
-
-    """
-    pass
-
+# class Throw:
+#     """
+#     *number of dice*d*number sides*
+#     Exm: 3d6 - throw 3 6-sided dices
+#     """
+#
+#     def __init__(self, dices):
+#         dices = dices.split('d')
+#         if len(dices) != 2:
+#             raise Exception('Throw must match the pattern: 3d6')
+#
+#         self.num_dices = int(dices[0])
+#         self.num_sides = int(dices[1])
+#
+#         self.dices = [Dice(self.num_sides) for i in range(self.num_dices)]
+#
+#     def get_sum(self):
+#         r = 0
+#         for dice in self.dices:
+#             r += dice.curr_value
+#         return f""
+#
+#
+#     def new_throw(self):
+#         print(self.dices[0])

@@ -3,10 +3,20 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-# import Computers as Cmp
 import fa
-# import json
-# import re
+
+
+def print_computers(computers):
+    """
+    Output information about Computers
+
+    Args:
+        computers: list with objects - Computer
+
+    """
+    for comp in computers:
+        print(comp)
+        input('Нажмите любую кнопку...')
 
 
 def main():
@@ -16,8 +26,12 @@ def main():
     full_cards = fa.get_cards(session, hosts)
     computers = fa.get_server(full_cards)
 
+    print_computers(computers)
+
+    print('Для начала настройки серверов')
+    input('Нажмите кюбую кнопку... ')
     for comp in computers:
-        print(comp)
+        comp.conf_linux_sever()
 
 
 # Press the green button in the gutter to run the script.
