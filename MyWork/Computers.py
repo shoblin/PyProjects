@@ -30,7 +30,7 @@ class Computer(object):
         self.os = "Os"
 
     def __str__(self):
-        r = f'Name:    {self.name}\n'
+        r = f'Name:    {self.name} || {self.name.upper()} \n'
         r += '#' * 50 + '\n'
         r += f'FQDN    {self.fqdn}\n'
         r += f'OS:     {self.os}\n'
@@ -57,30 +57,54 @@ class Computer(object):
         else:
             return True
 
-    def get_prefix(self):
-        return self.name.split("-")[0]
+    @property
+    def prefix(self):
+        return self.name.split("-")[0].upper()
 
-    def get_domain(self):
+    @property
+    def domain(self):
         domain = self.fqdn.replace(self.name + ".", "")
         return domain
+
+    @property
+    def t_zone(self):
+        """"""
+        for time_zone in cnf.time_zones:
+            if self.prefix in time_zone['prefix']:
+                return time_zone["tz"]
+        return "Europe/Moscow"
 
     def conf_linux_sever(self):
         user = 'root'
         secret = keyring.get_password('linux_root', user)
         port = 22
 
-        client = paramiko.SSHClient()
-        client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        with paramiko.SSHClient() as client:
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        # Подключение
-        client.connect(hostname=self.fqdn, username=user, password=secret, port=port)
+            # Подключение к серверу
+            client.connect(hostname=self.ip, username=user, password=secret, port=port)
 
-        client.exec_command(cnf.config_hostname.format(self.fqdn))
+            # Меняем содержимое файла hostname на <self.fqdn>
+            print(f'Записываем в hostname {self.fqdn}')
+            client.exec_command(cnf.config_hostname.format(self.fqdn))
+            print('Ok', "", sep="\n")
 
-        pref = self.get_prefix()
+            # Меняем resolv.conf
+            print('Записываем в resolv.conf')
+            pref = self.prefix
+            resolv_conf = cnf.config_resolv.format(self.domain, cnf.dns[pref][0], cnf.dns[pref][1])
 
-        resolv_conf = "\n".join(cnf.config_resolv).format(self.get_domain(), cnf.dns[pref][0], cnf.dns[pref][1])
-        print(resolv_conf.split(','))
-        # client.exec_command(resolv_conf)
+            for command in resolv_conf.split(','):
+                client.exec_command(command)
+            print('Ok', "", sep="\n")
 
-        client.close()
+            # Изменяем Time Zone сервера
+            client.exec_command(cnf.config_timezone.format(self.t_zone))
+
+            client.exec_command("shutdown -r 0")
+
+
+if __name__ == "__main__":
+    a = Computer('FRA-TEST-TS1.test.orc')
+    print(a.t_zone)

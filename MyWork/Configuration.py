@@ -1,7 +1,8 @@
+"""
 ##############################
 ########## KEYRING ###########
 ##############################
-
+"""
 # keyring jira
 sys_name_keyring = "jira-sd"
 login_keyring = "tscontrol-p"
@@ -19,10 +20,11 @@ linux_login_keyring = "topolskiy"
 zabbix_name_keyring = "zabbix"
 zabbix_login_keyring = "api-readonly-new"
 
+"""
 ##############################
 ###########  API  ############
 ##############################
-
+"""
 # Issue API section
 td_api_url = "/rest/api/2/search?jql=issue="
 field_hostname = "customfield_21001"
@@ -41,15 +43,23 @@ dns = {
     "FRX": ["10.200.196.5", "10.200.96.10"],
     "NYA": ["10.200.128.10", "10.200.160.10"],
     "NYX": ["10.200.160.10", "10.200.128.10"]
-}
+    }
 
-ATTR_ID = {"fqdn": 598,        # Fully Qualified Domain Name
-           "os_disk": 1475,    # Size of Disks
-           "data_disk": 1477,
-           "ip": 227,          # Ip Address
-           "core": 1473,
-           "memory": 1474,
-           "os": 221}
+time_zones = [
+    {"prefix": ["TT1", "TT2", "MSA", "MSK"], "tz": "Europe/Moscow"},
+    {"prefix": ["FRX", "FRE"], "tz": "Europe/Berlin"},
+    {"prefix": ["NYX", "NYA"], "tz": "America/New_york"}
+    ]
+
+ATTR_ID = {
+    "fqdn": 598,         # Fully Qualified Domain Name
+    "os_disk": 1475,     # Size of Disks
+    "data_disk": 1477,
+    "ip": 227,           # Ip Address
+    "core": 1473,
+    "memory": 1474,
+    "os": 221
+    }
 
 # Linux base configuration
 config_network = """
@@ -67,6 +77,7 @@ iface ens192 inet static
         gateway 10.200.96.1"""
 
 config_hostname = "echo {} > /etc/hostname"
+config_timezone = "timedatectl set-timezone {}"
 
 config_resolv = "echo 'domain {0}' > /etc/resolv.conf,echo 'search {0}' >> /etc/resolv.conf," \
                 "echo 'nameserver {1}' >> /etc/resolv.conf,echo 'nameserver {2}' >> /etc/resolv.conf"

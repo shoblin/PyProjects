@@ -32,18 +32,19 @@ def hostname_format(raw_names):
         host_id: list with server's ids
     """
     host_ids = []
-    print(raw_names)
-    for i in range(1, len(raw_names), 2):
+    for i in range(0, len(raw_names)):
         id = raw_names[i].split()[1]
         id = id.split('-')[1].strip(')')
         host_ids.append(id)
+    # print(host_ids)
     return host_ids
 
 
-def get_host_id(session):
+def get_host_id(session, td):
     """
 
     Args:
+        td: Issue key. Example: TD-23452
         session: connection parameters for create connects to JIRA
 
     Returns:
@@ -51,11 +52,14 @@ def get_host_id(session):
     """
 
     # Get issue key and request api_url
-    td = input('Enter issue TD:')
     api_url = cnf.jira_url + cnf.td_api_url + td
     issue_objects = session.get(api_url).json()
-    td_fields = issue_objects['issues'][0]['fields']
-    host_names_raw = td_fields[cnf.field_hostname]
+    try:
+        td_fields = issue_objects['issues'][0]['fields']
+        host_names_raw = td_fields[cnf.field_hostname]
+    except KeyError:
+        print("Я не нашел эту TD-шку")
+        return []
 
     return hostname_format(host_names_raw)
 
@@ -91,6 +95,7 @@ def get_server(cards):
 
     """
     computers = []
+    # print(cards)
     for card in cards['objectEntries']:
 
         new_computer = cmp.Computer(card["label"])

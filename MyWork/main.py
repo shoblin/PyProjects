@@ -16,21 +16,22 @@ def print_computers(computers):
     """
     for comp in computers:
         print(comp)
-        input('Нажмите любую кнопку...')
 
 
 def main():
     session = fa.create_jira_session()
-    hosts = fa.get_host_id(session)
+    td = input('Enter issue TD:')
+    hosts = fa.get_host_id(session, td)
 
     full_cards = fa.get_cards(session, hosts)
     computers = fa.get_server(full_cards)
 
     print_computers(computers)
 
-    print('Для начала настройки серверов')
+    print('Для начала автоматической настройки серверов')
     input('Нажмите кюбую кнопку... ')
     for comp in computers:
+        print(f'Идет настройка {comp.name}')
         comp.conf_linux_sever()
 
 
