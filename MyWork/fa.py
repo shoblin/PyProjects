@@ -36,7 +36,6 @@ def hostname_format(raw_names):
         id = raw_names[i].split()[1]
         id = id.split('-')[1].strip(')')
         host_ids.append(id)
-    # print(host_ids)
     return host_ids
 
 
@@ -95,7 +94,6 @@ def get_server(cards):
 
     """
     computers = []
-    # print(cards)
     for card in cards['objectEntries']:
 
         new_computer = cmp.Computer(card["label"])
